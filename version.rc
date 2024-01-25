@@ -16,10 +16,10 @@ VSVersionInfo(
                     StringStruct(u'CompanyName', u'LANTEQ Kamil Okrasa'),
                     StringStruct(u'FileDescription', u'IP camera snapshot tool'),
                     StringStruct(u'FileVersion', u'1.0.0.0'),
-                    StringStruct(u'InternalName', u'hcpreport'),
+                    StringStruct(u'InternalName', u'snapshot'),
                     StringStruct(u'LegalCopyright', u'Copyright \xa9 2024 LANTEQ Kamil Okrasa, All rights reserved.'),
-                    StringStruct(u'OriginalFilename', u'hcpreport.exe'),
-                    StringStruct(u'ProductName', u'hcpreport'),
+                    StringStruct(u'OriginalFilename', u'snapshot.exe'),
+                    StringStruct(u'ProductName', u'snapshot'),
                     StringStruct(u'ProductVersion', u'1.0.0.0'),
                     StringStruct(u'Language', u'Language Neutral'),
                 ]
