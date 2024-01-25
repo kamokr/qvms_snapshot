@@ -116,6 +116,10 @@ def main():
     parser.add_argument('-l', '--list', dest='list_cameras', action='store_true', help='list cameras defined in config.ini')
     args = parser.parse_args()
 
+    if args.host is None and args.name is None:
+        parser.print_help()
+        return
+
     if args.list_cameras:
         config = configparser.ConfigParser()
         config.read('config.ini')
