@@ -32,6 +32,62 @@ Wyświetlenie informacji o kamerach zapisanych w pliku config.ini
 '''
 
 
+LOG_DIR = 'snapshot_log'
+LOG_FILENAME = 'snapshot.log'
+
+
+if getattr(sys, 'frozen', False):
+    application_path = os.path.dirname(sys.executable)
+elif __file__:
+    application_path = os.path.dirname(__file__)
+__location__ = os.path.realpath(os.path.join(os.getcwd(), application_path))
+
+
+def setup_logging():
+    log_dir = os.path.join(__location__, LOG_DIR)
+    log_path = os.path.join(log_dir, LOG_FILENAME)
+
+    LOG_CONFIG = {
+        'version': 1,
+
+        'formatters': {
+            'void': {
+                'format': ''
+            },
+            'standard': {
+                'format': '%(asctime)s [%(levelname)s] %(message)s'
+                # 'format': '[%(levelname)s] %(message)s'
+            },
+        },
+        'handlers': {
+            'default': {
+                'level':'DEBUG',
+                'class':'logging.StreamHandler',
+                'formatter': 'standard',
+                'stream': 'ext://sys.stdout'
+            },
+            'error': {
+                'level':'DEBUG',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'formatter': 'standard',
+                'filename': log_path,
+                'maxBytes': 10485760,
+                'backupCount': 20,
+                'encoding': 'utf8'
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['default', 'error'],
+                'level': 'DEBUG'
+            },
+        }
+    }
+    os.makedirs(log_dir, exist_ok=True)
+    logging.config.dictConfig(LOG_CONFIG)
+    #logging.getLogger('urllib3').setLevel(logging.WARNING)
+
+
 def snapshot_dahua(host, port, username, password):
     url = 'http://{host}:{port}/cgi-bin/snapshot.cgi'.format(host=host, port=port)
     logging.info('connecting to camera')
@@ -104,6 +160,8 @@ def get_camera_info_by_name(name):
 
 
 def main():
+    setup_logging()
+    
     parser = argparse.ArgumentParser(prog='snapshot.exe', description='IP camera snapshot tool')
     # parser.add_argument('-n', '--name', dest='name', type=str, help='IP camera name')
     parser.add_argument('name', nargs='?', type=str, help='IP camera name')
@@ -152,7 +210,7 @@ def main():
         img = snapshot_auto(host, port, username, password)
     
 
-    ts = datetime.datetime.now().replace(microsecond=0).isoformat().replace(':', '').replace('-', '')
+    ts = datetime.datetime.now().replace(microsecond=0).isoformat().replace(':', '').replace('-', '').replace('T', '_')
     if img is not None:
         if name is not None:
             filename = '{}_{}.jpg'.format(name, ts)
