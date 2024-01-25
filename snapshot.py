@@ -116,10 +116,6 @@ def main():
     parser.add_argument('-l', '--list', dest='list_cameras', action='store_true', help='list cameras defined in config.ini')
     args = parser.parse_args()
 
-    if args.host is None and args.name is None:
-        parser.print_help()
-        return
-
     if args.list_cameras:
         config = configparser.ConfigParser()
         config.read('config.ini')
@@ -137,6 +133,10 @@ def main():
             print(' port: {}'.format(port))
             print('  dir: {}'.format(path))
         return
+    
+    if args.host is None and args.name is None:
+        parser.print_help()
+        return
 
     name = args.name
     if args.host is not None:
@@ -151,11 +151,13 @@ def main():
     elif model == 'auto':
         img = snapshot_auto(host, port, username, password)
     
+
+    ts = datetime.datetime.now().replace(microsecond=0).isoformat().replace(':', '').replace('-', '')
     if img is not None:
         if name is not None:
-            filename = '{}_{}.jpg'.format(name, datetime.datetime.now().replace(microsecond=0).isoformat())
+            filename = '{}_{}.jpg'.format(name, ts)
         else:
-            filename = '{}.jpg'.format(datetime.datetime.now().replace(microsecond=0).isoformat())
+            filename = '{}.jpg'.format(ts)
         save_image(img, path, filename)
     
 
