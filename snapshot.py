@@ -3,6 +3,7 @@ import argparse
 import configparser
 import datetime
 import logging
+import logging.config
 import os
 import sys
 import time
@@ -161,7 +162,7 @@ def get_camera_info_by_name(name):
 
 def main():
     setup_logging()
-    
+
     parser = argparse.ArgumentParser(prog='snapshot.exe', description='IP camera snapshot tool')
     # parser.add_argument('-n', '--name', dest='name', type=str, help='IP camera name')
     parser.add_argument('name', nargs='?', type=str, help='IP camera name')
