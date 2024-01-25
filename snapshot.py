@@ -82,11 +82,14 @@ def setup_logging():
                 'handlers': ['default', 'error'],
                 'level': 'DEBUG'
             },
+            'urllib3': {
+                # 'handlers': ['default', 'error'],
+                'level': 'DEBUG'
+            },
         }
     }
     os.makedirs(log_dir, exist_ok=True)
     logging.config.dictConfig(LOG_CONFIG)
-    #logging.getLogger('urllib3').setLevel(logging.WARNING)
 
 
 def snapshot_dahua(host, port, username, password):
